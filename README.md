@@ -1,17 +1,19 @@
-** Operating instructions **
+***Operating instructions***
 Installing, setting up and starting the containers
-*clone the code for the system*
+
+***clone the code for the system***
 • git clone https://github.com/sajibnet90/Drone-Delivery-Concept-Project.git
 • Run it using spring boot
-** Testing instructions **
+
+**Testing instructions**
 Hands on commands to test the system with example requests. How to verify the result.
 Console for hivemq: /opt/homebrew/opt/activemq/bin/activemq console
 
 For Pizza store:
-** Place order:**  curl -X POST -H "Content-Type: application/json" -d '{"Order_id":"2",
+***Place order:***  curl -X POST -H "Content-Type: application/json" -d '{"Order_id":"2",
 "Pizza_name":"Margherita", "size": "big"}' http://localhost:8481/pizza/orders
 
-** See order details:** curl http://localhost:8481/pizza/orders
+**See order details:** curl http://localhost:8481/pizza/orders
 
 **Cancel order:** curl -X DELETE http://localhost:8481/pizza/orders/1
 
