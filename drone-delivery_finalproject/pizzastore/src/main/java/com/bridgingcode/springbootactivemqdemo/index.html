@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizza Order System</title>
+</head>
+<body>
+
+    <h1>Pizza Order System</h1>
+
+    <h2>Place an Order</h2>
+    <form id="orderForm">
+        <label for="orderId">Order ID:</label>
+        <input type="text" id="orderId" name="orderId" required>
+        <label for="pizzaName">Pizza Name:</label>
+        <input type="text" id="pizzaName" name="pizzaName" required>
+        <label for="pizzaSize">Pizza Size:</label>
+        <input type="text" id="pizzaSize" name="pizzaSize" required>
+        <button type="button" onclick="placeOrder()">Place Order</button>
+    </form>
+
+    <h2>Cancel an Order</h2>
+    <form id="cancelForm">
+        <label for="cancelOrderId">Order ID:</label>
+        <input type="text" id="cancelOrderId" name="cancelOrderId" required>
+        <button type="button" onclick="cancelOrder()">Cancel Order</button>
+    </form>
+
+    <script>
+        function placeOrder() {
+            // Make an AJAX request to place an order
+            // Example using fetch:
+            fetch('http://localhost:8481/pizza/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    Order_id: document.getElementById('orderId').value,
+                    Pizza_name: document.getElementById('pizzaName').value,
+                    size: document.getElementById('pizzaSize').value
+                }),
+            })
+            .then(response => response.json())
+            .then(data => alert(data))
+            .catch(error => console.error('Error:', error));
+        }
+
+        function cancelOrder() {
+            // Make an AJAX request to cancel an order
+            // Example using fetch:
+            fetch(`http://localhost:8481/pizza/orders/${document.getElementById('cancelOrderId').value}`, {
+                method: 'DELETE',
+            })
+            .then(response => response.text())
+            .then(data => alert(data))
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+
+</body>
+</html>

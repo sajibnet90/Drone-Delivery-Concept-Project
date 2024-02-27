@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pizzeria</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            /* background-color: #f5f5f5; */
+            color: #333;
+            margin: 20px;
+            background-image: url('background.jpg');
+            background-color: rgba(255, 255, 255, 0.4);
+            /* Adjust the alpha value as needed */
+            background-blend-mode: overlay;
+
+
+        }
+
+        h1,
+        h2 {
+            color: #993333;
+            text-align: center;
+        }
+
+        form {
+            margin-bottom: 40px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #993333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #cc4d4d;
+        }
+
+        #orderDetails {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #993333;
+            color: #fff;
+        }
+
+        #logo {
+            max-width: 10%;
+            height: 10%;
+        }
+
+        h1 {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin-left: 43%;
+        }
+    </style>
+</head>
+
+
+<body>
+    <h1><img id="logo" src="pizza.png" alt="Pizza Store Logo">Pizzeria</h1>
+
+    <!-- Order Pizza Form -->
+    <h2>Order Pizza</h2>
+    <form id="orderForm">
+        <!-- Order ID -->
+      <h3>
+        <label for="orderId">Order ID:</label>
+        <input type="text" id="orderId" name="orderId" required>
+    </h3>
+        <!-- Pizza Name Dropdown -->
+        <h3>
+        <label for="pizzaName">Pizza Name:</label>
+        <select id="pizzaName" name="pizzaName" required>
+            <option value="Margherita">Margherita</option>
+            <option value="Pepperoni">Pepperoni</option>
+            <option value="Vegetarian">Vegetarian</option>
+            <option value="Hawaiian">Hawaiian</option>
+            <option value="Supreme">Supreme</option>
+        </select>
+    </h3>
+        <!-- Size Dropdown -->
+        <h3>
+        <label for="size">Size:</label>
+        <select id="size" name="size" required>
+            <option value="Small">Small</option>
+            <option value="Medium">Medium</option>
+            <option value="Big">Big</option>
+        </select>
+    </h3>
+        <button type="button" onclick="submitOrder()">Place Order</button>
+    </form>
+
+    <!-- View Order Details Form -->
+    <h2>View Order Details</h2>
+    <form id="viewOrderForm">
+        <!-- Order ID for details -->
+        <h3>
+        <label for="orderIdDetails">Order ID:</label>
+        <input type="text" id="orderIdDetails" name="orderIdDetails" required>
+    </h3>
+        <button type="button" onclick="viewOrderDetails()">View Details</button>
+    </form>
+
+    <!-- Display Order Details -->
+    <h3>
+    <div id="orderDetails"></div>
+</h3>
+    <!-- Cancel Order Form -->
+    <h2>Cancel Order</h2>
+    <h3>
+    <form id="cancelOrderForm">
+        <!-- Order ID for cancellation -->
+        <label for="orderIdCancel">Order ID:</label>
+        <input type="text" id="orderIdCancel" name="orderIdCancel" required>
+
+        <button type="button" onclick="cancelOrder()">Cancel Order</button>
+    </form>
+</h3>
+
+
+
+    <script>
+        function submitOrder() {
+            var orderData = {
+                "Order_id": document.getElementById("orderId").value,
+                "Pizza_name": document.getElementById("pizzaName").value,
+                "size": document.getElementById("size").value
+            };
+
+            fetch('http://localhost:8481/pizza/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderData)
+            })
+                .then(response => {
+                    // Check if the response is successful
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.text(); // Parse as text
+                })
+                .then(data => {
+                    alert(data); // Display the response as text
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error placing order.');
+                });
+        }
+
+        function viewOrderDetails() {
+            var orderIdDetails = document.getElementById("orderIdDetails").value;
+
+            fetch(`http://localhost:8481/pizza/orders/${orderIdDetails}`)
+                .then(response => {
+                    // Check if the response is successful
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    // Parse as JSON or return an empty object if the response is empty
+                    return response.json().catch(() => ({}));
+                })
+                .then(data => {
+                    // Display order details in a table
+                    showOrderDetails(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error retrieving order details.');
+                });
+        }
+
+        function showOrderDetails(order) {
+            var orderDetailsDiv = document.getElementById("orderDetails");
+            orderDetailsDiv.innerHTML = ""; // Clear previous content
+
+            if (Object.keys(order).length === 0) {
+                orderDetailsDiv.innerText = "Order not found.";
+            } else {
+                var detailsTable = document.createElement("table");
+                detailsTable.innerHTML = `
+            <tr>
+                <th>Order ID</th>
+                <td>${order.order_id}</td>
+            </tr>
+            <tr>
+                <th>Pizza Name</th>
+                <td>${order.pizza_name}</td>
+            </tr>
+            <tr>
+                <th>Size</th>
+                <td>${order.size}</td>
+            </tr>
+        `;
+                orderDetailsDiv.appendChild(detailsTable);
+            }
+        }
+
+
+        function cancelOrder() {
+            var orderIdCancel = document.getElementById("orderIdCancel").value;
+
+            fetch(`http://localhost:8481/pizza/orders/${orderIdCancel}`, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    // Check if the response is successful
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.text(); // Parse as text
+                })
+                .then(data => {
+                    alert(data); // Display the response as text
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error canceling order.');
+                });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-PizzastoreApplication<pizzastore>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "fi.sade23.droneverse.pizzastore.PizzastoreApplication",
+            "projectName": "pizzastore",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-InventoryApplication<inventory>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "fi.sade23.droneverse.inventory.InventoryApplication",
+            "projectName": "inventory",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-MonitoringApplication<monitoring>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "fi.sade23.droneverse.monitoring.MonitoringApplication",
+            "projectName": "monitoring",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-MainApplication<fleet>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "fi.sade23.fleet.main.MainApplication",
+            "projectName": "fleet",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-DroneunitApplication<droneunit>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "fi.sade23.droneverse.droneunit.DroneunitApplication",
+            "projectName": "droneunit",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-SpringBootActiveMqDemoApplication<pizzastore>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.bridgingcode.springbootactivemqdemo.SpringBootActiveMqDemoApplication",
+            "projectName": "pizzastore",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
